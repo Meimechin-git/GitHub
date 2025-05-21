@@ -16,7 +16,9 @@
 上の盤面に対応するmapは盤面に書かれている数値がリストの要素になる。  
 また、maskはオレンジが背景色になっているマスの要素は1(int)、白になっているマスの要素は0(int)となる。以降に出てくる図もこれに統一する。  
 上の盤面に対応するlinkerは以下のようになる。  
-{{5,4,2,5}, ※0の要素は(5,4)と(2,5)に存在する。  
+  
+{  
+{5,4,2,5}, ※0の要素は(5,4)と(2,5)に存在する。  
 {0,0,1,0},  ※1の要素は(0,0)と(1,0)に存在する。  
 {1,2,4,4},  ※2の要素は(1,2)と(4,5)に存在する。  
 ...  
@@ -40,9 +42,9 @@ sort関数はseparate関数で抽出されたソート領域を並び替えま�
 ![スクリーンショット 2025-05-21 093521](https://github.com/user-attachments/assets/3c13ff96-a184-4a4a-9996-776195430334)  
 ![スクリーンショット 2025-05-21 093555](https://github.com/user-attachments/assets/df363135-fbc1-4a81-8ce7-f1ad79ed87fb)  
 もし、引数が上2列の領域の場合は左上から順にmatch関数に掛けてソートします。  
-![スクリーンショット 2025-05-21 093714](https://github.com/user-attachments/assets/95e0e6a8-0187-474b-be0a-503e2f00b99c)  
-![スクリーンショット 2025-05-21 093656](https://github.com/user-attachments/assets/c10a78b4-6ead-407c-97a5-a9bcc45135bd)  
 ![スクリーンショット 2025-05-21 093615](https://github.com/user-attachments/assets/38b42e97-588e-4347-88db-5f80e66a7b1a)  
+![スクリーンショット 2025-05-21 093656](https://github.com/user-attachments/assets/c10a78b4-6ead-407c-97a5-a9bcc45135bd)  
+![スクリーンショット 2025-05-21 093714](https://github.com/user-attachments/assets/95e0e6a8-0187-474b-be0a-503e2f00b99c)  
 もし、引数が右2列の領域の場合は左上から順にmatch関数に掛けてソートします。  
 
 ## match関数
