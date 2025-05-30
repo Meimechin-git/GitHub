@@ -58,6 +58,35 @@ match関数は指定されたペアをメモ化探索を用いて合わせる関
 ![スクリーンショット 2025-05-21 151412](https://github.com/user-attachments/assets/0d5d3542-730e-4e40-a1ea-2fb17aec0fbd)  
 同じように、マスの中で最短手順の数が2のマス({0}を含む)から順に左回転で巻き戻して手順を記録する。  
 ![スクリーンショット 2025-05-21 152329](https://github.com/user-attachments/assets/f17ca7e9-3942-4ab9-a106-fa0bd3147f63)  
-最後のマスまで探索し終えると、linkerをもとに対象の座標(ここでは(0,2))のマスの手順をlogに保存し、mapを回転させる。
+最後のマスまで探索し終えると、linkerをもとに対象の座標(ここでは(0,2))のマスの手順をlogに保存し、mapを回転させる。  
+  
+----------
+# method2_v1 動作原理概要
 
+当プログラムデでは、Tableクラスを用いてソートを行います。ただし、動作概要はmethod1_v1とは全く異なります。  
+method2_v1では、現在の盤面から1手先の盤面の遷移を評価し、最高評価の手を逐次保存する方法です。  
+盤面を評価する方法は様々ありますが、Tableクラスでは8つの評価関数を実装しています。  
 
+## Tableクラスの属性
+
+- vector<vector<int>> map ：フィールドの盤面を保存する2次元リスト。  
+- vector<vector<int>> mask ：ソート済みのマス(1)とソート前のマス(0)の情報を保存する2次元リスト。  
+- vector<vector<int>> log ：手順を保存するリスト2次元リスト。
+- static const int FP = 0  :
+- static const int LZS = 1 :
+- static const int LOS = 2 :
+- static const int ZP = 3  :
+- static const int OP = 4  :
+- static const int UO = 5  :
+- static const int CZ = 6  :
+- static const int DS = 7  :
+
+## Talbeクラスの利用方法
+
+- コンストラクタ(type1) ：Table(int size,vector<vector<int>> map,vector<int> functions,vector<int> biases);
+  - int size :フィールドの一辺の長さ。
+  - vector<vector<int>> map :フィールドの2次元リスト
+  - vector<int> functions   :評価関数に割り当てられた定数のリスト
+- 
+
+## FitPiar
