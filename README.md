@@ -96,8 +96,8 @@ method2_v1では、すべての1手先の手順を評価し、最高評価の手
   
 - コンストラクタ(type2) ：Table(int size,vector<vector<int>> map,vector<int> functions,vector<double> fp_biases,vector<double> ep_biases);
   - vector<int> fp_biases    ：reveiw_scoreメソッドの引数が0の時、評価関数に割り当てるバイアス(総和は1.0)
-  - vector<int> ep_biases    ：reveiw_scoreメソッドの引数が1の時、評価関数に割り当てるバイアス(総和は1.0)
-  ※この時、**biases=fp_biases+(ep_biases-fp_biases)*reveiw_score**となる
+  - vector<int> ep_biases    ：reveiw_scoreメソッドの引数が1の時、評価関数に割り当てるバイアス(総和は1.0)  
+  ※この時、`biases=fp_biases+(ep_biases-fp_biases)*reveiw_score`となる
 
 - search_best_wayメソッド ：bool search_best_way();
   - 手順を評価しTableクラスを更新するメソッド。また、これ以上更新が可能かを返す。
@@ -105,7 +105,7 @@ method2_v1では、すべての1手先の手順を評価し、最高評価の手
  
 - update_biasesメソッド ：void update_biases(double score);
   - type2でインスタンス化を行った場合、Tableクラスの更新ごとにバイアスを変えるために作られたメソッド。
-  - **biases=fp_biases+(ep_biases-fp_biases)*reveiw_score**の処理を行う。
+  - `biases=fp_biases+(ep_biases-fp_biases)*reveiw_score`の処理を行う。
  
 利用例1：
 ```cpp
