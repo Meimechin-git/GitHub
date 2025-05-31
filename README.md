@@ -64,7 +64,7 @@ match関数は指定されたペアをメモ化探索を用いて合わせる関
 # method2_v1 動作原理概要
 
 当プログラムデでは、Tableクラスを用いてソートを行います。ただし、動作概要はmethod1_v1とは全く異なります。  
-method2_v1では、現在の盤面から1手先の盤面の遷移を評価し、最高評価の手を逐次保存する方法です。  
+method2_v1では、すべての1手先の手順を評価し、最高評価の手順を逐次保存する方法です。  
 盤面を評価する方法は様々ありますが、Tableクラスでは8つの評価関数を実装しています。  
 
 ## Tableクラスの属性
@@ -72,21 +72,49 @@ method2_v1では、現在の盤面から1手先の盤面の遷移を評価し、
 - vector<vector<int>> map ：フィールドの盤面を保存する2次元リスト。  
 - vector<vector<int>> mask ：ソート済みのマス(1)とソート前のマス(0)の情報を保存する2次元リスト。  
 - vector<vector<int>> log ：手順を保存するリスト2次元リスト。
-- static const int FP = 0  :
-- static const int LZS = 1 :
-- static const int LOS = 2 :
-- static const int ZP = 3  :
-- static const int OP = 4  :
-- static const int UO = 5  :
-- static const int CZ = 6  :
-- static const int DS = 7  :
+- static const int FP = 0  ：fitPairメソッドに割り当てられた定数
+- static const int LZS = 1 ：largestZeroSquareメソッドに割り当てられた定数
+- static const int LOS = 2 ：largestOneSquareメソッドに割り当てられた定数
+- static const int ZP = 3  ：ZeroPairsメソッドに割り当てられた定数
+- static const int OP = 4  ：OnePairsメソッドに割り当てられた定数
+- static const int UO = 5  ：underOnesメソッドに割り当てられた定数
+- static const int CZ = 6  ：centerZerosメソッドに割り当てられた定数
+- static const int DS = 7  ：distanceScoreメソッドに割り当てられた定数
+
+## FitPiar
 
 ## Talbeクラスの利用方法
 
 - コンストラクタ(type1) ：Table(int size,vector<vector<int>> map,vector<int> functions,vector<int> biases);
   - int size :フィールドの一辺の長さ。
-  - vector<vector<int>> map :フィールドの2次元リスト
-  - vector<int> functions   :評価関数に割り当てられた定数のリスト
-- 
+  - vector<vector<int>> map ：フィールドの2次元リスト
+  - vector<int> functions   ：評価関数に割り当てられた定数のリスト
+  - vector<int> biases      ：評価関数に割り当てるバイアス(総和は1.0)
 
-## FitPiar
+- reveiw_scoreメソッド ：double reveiw_score(vector<vector<int>> map);
+  - 揃っているペアの割合を返す ( 揃っているペアの数/すべてのペアの数)
+  
+- コンストラクタ(type2) ：Table(int size,vector<vector<int>> map,vector<int> functions,vector<double> fp_biases,vector<double> ep_biases);
+  - vector<int> fp_biases    ：reveiw_scoreメソッドの引数が0の時、評価関数に割り当てるバイアス(総和は1.0)
+  - vector<int> ep_biases    ：reveiw_scoreメソッドの引数が1の時、評価関数に割り当てるバイアス(総和は1.0)
+  ※この時、**biases=fp_biases+(ep_biases-fp_biases)*reveiw_score**となる
+
+- search_best_wayメソッド ：bool search_best_way();
+  - 手順を評価しTableクラスを更新するメソッド。また、これ以上更新が可能かを返す。
+  - デフォルトでは、評価結果を出力している。
+ 
+- update_biasesメソッド ：void update_biases(double score);
+  - type2でインスタンス化を行った場合、Tableクラスの更新ごとにバイアスを変えるために作られたメソッド。
+  - **biases=fp_biases+(ep_biases-fp_biases)*reveiw_score**の処理を行う。
+ 
+利用例1：
+```cpp
+table = Table(size,map,{t.FP,t.DS,t.CZ},{0.8,0.1,0.1}); //fitPair: 0.8, distanceScore: 0.1, centerZeros: 0.1
+while (t.search_best_way());
+```
+
+利用例2：
+```cpp
+table = Table(size,map,{t.FP,t.DS,t.CZ},{0.8,0.5,0.15},{0.8,0.15,0.5}); //fitPair: 0.8, distanceScore: 0.5→0,15, centerZeros: 0.15→0,5
+while (t.search_best_way()) t.update_biases(t.reveiw_score(t.map));
+```
